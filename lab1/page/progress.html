@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Statistics and achievements of user physical activity">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MyProgress</title>
+
+        <link rel="stylesheet" href="style/main.css">
+        <link rel="stylesheet" href="style/common-header.css">
+        <link rel="stylesheet" href="style/progress.css">
+    </head>
+    <body>
+    <div class="container">
+        <div class="background-image left-image"></div>
+        <div class="background-image right-image"></div>
+
+        <div class="center-box">
+            <div class="header common-header" id="header-placeholder"></div>
+
+            <div class="walking-info">
+
+                <div class="info">
+                    <h4>✨Ціль✨</h4>
+                    <p>12000</p>
+                    <h4>✅Зроблено кроків✅</h4>
+                    <p>9840</p>
+                    <h4>🚶Пройдена відстань🚶</h4>
+                    <p>7.5 км</p>
+                    <h4>🔥Спалено калорій🔥</h4>
+                    <p>344 ккал</p>
+                </div>
+
+                <div class="progress">
+                    <div class="date">
+                        09.03.2025
+                    </div>
+
+                    <div class="progress-ring" style="background: conic-gradient(#4CAF50 0%, #4CAF50 82%, #eee 82%, #eee 100%)">
+                        <div class="progress-overlay"></div>
+                        <p class="progress-text">82%</p>
+                    </div>
+
+                    <a class="arrow arrow-left">←</a>
+                    <a class="arrow arrow-right">→</a>
+                </div>
+            </div>
+
+            <div class="achievements-area">
+                <div class="achievement">
+                    <img src="../resources/image/progress/icons/for-walking.png" alt="Ration page">
+                    <div class="text">Ціль досягнуто 30 днів підряд</div>
+                </div>
+
+                <div class="achievement">
+                    <img src="../resources/image/progress/icons/for-training-starting.png" alt="Ration page">
+                    <div class="text">Розпочато тренувальну програму</div>
+                </div>
+
+                <div class="achievement">
+                    <img src="../resources/image/progress/icons/for-walking.png" alt="Ration page">
+                    <div class="text">Ціль досягнуто 10 днів підряд</div>
+                </div>
+
+                <div class="achievement">
+                    <img src="../resources/image/progress/icons/for-registration.png" alt="Ration page">
+                    <div class="text">Дякуємо за реєстрацію!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        fetch('../page/internal/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+
+        fetch('../page/internal/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+    </script>
+    </body>
+</html>

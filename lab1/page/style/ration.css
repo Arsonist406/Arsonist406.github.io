@@ -1,0 +1,105 @@
+.left-image {
+    grid-area: left-image;
+    background: url('../../resources/image/ration/background-ration-desktop-mirror.png')
+    center/cover no-repeat;
+}
+
+.right-image {
+    grid-area: right-image;
+    background: url('../../resources/image/ration/background-ration-desktop.png')
+    center/cover no-repeat;
+}
+
+.center-box {
+    grid-area: center-box;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    display: grid;
+    grid-template-areas:
+        "header header header"
+        "plan_1 plan_2 plan_3";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 109px 1fr 40px;
+    z-index: 1;
+}
+
+.header {
+    grid-area: header;
+}
+
+.plan {
+    grid-area: plan;
+    /*border: 2px solid #2e2e2e;*/
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    font-family: 'Arial', sans-serif;
+    margin: 17px;
+    padding: 12px;
+    border-radius: 10px;
+    transition: all 0.4s ease;
+    background: white;
+}
+
+.plan_1 {
+    grid-area: plan_1;
+}
+
+.plan_2 {
+    grid-area: plan_2;
+}
+
+.plan_3 {
+    grid-area: plan_3;
+}
+
+.center-box:has(.plan:hover) .plan:not(:hover) {
+    filter: blur(4px);
+    transform: scale(0.95);
+}
+
+.plan:hover {
+    box-shadow: 0 8px 12px rgba(0,0,0,0.2);
+    transform: scale(1.05);
+}
+
+@media (max-width: 1024px) {
+    .center-box {
+        grid-template-areas:
+            "header header"
+            "plan_1 plan_2"
+            "plan_3 plan_3";
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 109px 1fr auto;
+    }
+
+    .plan {
+        margin: 12px;
+        padding: 8px;
+    }
+
+    .center-box:has(.plan:hover) .plan:not(:hover) {
+        filter: none;
+        transform: none;
+    }
+
+    .plan:hover {
+        transform: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+}
+
+@media (max-width: 480px) {
+    .center-box {
+        grid-template-areas:
+            "header"
+            "plan_1"
+            "plan_2"
+            "plan_3";
+        grid-template-columns: 1fr;
+        grid-template-rows: 109px repeat(3, 1fr);
+    }
+
+    .plan {
+        margin: 10px;
+        padding: 6px;
+        transform: none;
+    }
+}
