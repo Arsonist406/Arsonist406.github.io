@@ -1,0 +1,20 @@
+{
+  "achievements": [
+    {
+      "icon": "../resources/image/progress/icons/for-walking.png",
+      "text": "Ціль досягнуто 30 днів підряд"
+    },
+    {
+      "icon": "../resources/image/progress/icons/for-training-starting.png",
+      "text": "Розпочато тренувальну програму"
+    },
+    {
+      "icon": "../resources/image/progress/icons/for-walking.png",
+      "text": "Ціль досягнуто 10 днів підряд"
+    },
+    {
+      "icon": "../resources/image/progress/icons/for-registration.png",
+      "text": "Дякуємо за реєстрацію!"
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Available rations">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ration</title>
+
+        <link rel="stylesheet" href="style/main.css">
+        <link rel="stylesheet" href="style/common-header.css">
+        <link rel="stylesheet" href="style/ration.css">
+    </head>
+    <body>
+    <div class="container">
+        <div class="background-image left-image"></div>
+        <div class="background-image right-image"></div>
+
+        <div class="center-box">
+            <div class="header common-header" id="header-placeholder"></div>
+
+            <div class="rations-container" id="rations-container"></div>
+
+            <div class="info">
+                <h4>Щоб зберегти раціон - натисніть на нього</h4>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // ==================== Common ====================
+        fetch('../page/internal/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+
+        fetch('../page/internal/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+
+
+        // ==================== Rations ====================
+        fetch('../resources/data/rations.json')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('rations-container');
+
+                data.rations.forEach((ration, index) => {
+                    const planDiv = document.createElement('div');
+                    planDiv.className = `plan plan_${index + 1}`;
+
+                    let htmlContent = `
+                        <h2 style="text-align: center;">${ration.title}</h2>
+                        <p style="text-align: center;">${ration.subtitle}</p>`;
+
+                    ration.days.forEach(day => {
+                        htmlContent += `
+                            <h4>${day.day}</h4>
+                            ${day.meals.map(meal => `
+                              <p>${meal.meal}</p>
+                              <p><i>${meal.calories}</i></p>
+                            `).join('')}
+                            <p>Загалом: <i>${day.total}</i></p>`;
+                    });
+
+                    planDiv.innerHTML = htmlContent;
+
+                    planDiv.addEventListener('click', () => {
+                        downloadRationTxt(ration);
+                    });
+
+                    container.appendChild(planDiv);
+                })
+            }).catch(error => console.error('Помилка завантаження раціонів:', error));
+
+        function downloadRationTxt(ration) {
+            let fileName;
+
+            if (ration.title === "«Здоров'я та Баланс»") {
+                fileName = "health-plan.txt";
+            }
+            else if (ration.title === "«Сила та Ріст»") {
+                fileName = "muscle-gain.txt";
+            }
+            else if (ration.title === "«Легкість та Форма»") {
+                fileName = "weight-loss.txt";
+            }
+            else {
+                console.error("Невідомий раціон:", ration.title);
+                return;
+            }
+
+            const filePath = `../resources/text/${fileName}`;
+
+            const a = document.createElement('a');
+            a.href = filePath;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+    </body>
+</html>
