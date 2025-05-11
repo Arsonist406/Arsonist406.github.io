@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Home page">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/home.css">
+</head>
+<body>
+<div class="container">
+    <div class="background-image left-image"></div>
+    <div class="background-image right-image"></div>
+
+    <div class="center-box">
+        <div class="home-header">
+            <a href="home.html" target="_self">
+                <img src="../resources/image/site-logo.png" alt="Healthy Life">
+            </a>
+        </div>
+
+        <div class="content progress">
+            <a href="progress.html" target="_self">
+                <img src="../resources/image/home/progress-home-blur-1px.jpg" alt="Progress page">
+                <div class="text">
+                    Мій Прогрес
+                </div>
+            </a>
+        </div>
+        <div class="content ration">
+            <a href="ration.html" target="_self">
+                <img src="../resources/image/home/ration-home-blur-1px.jpg" alt="Ration page">
+                <div class="text">
+                    Раціони
+                </div>
+            </a>
+        </div>
+        <div class="content exercises">
+            <a href="training-programs.html" target="_self">
+                <img src="../resources/image/home/gym-home-blur-1px.jpg" alt="Exercises page">
+                <div class="text">
+                    Доступні програми тренування
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script>
+    fetch('../page/internal/footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer-placeholder').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading footer:', error));
+</script>
+</body>
+</html>

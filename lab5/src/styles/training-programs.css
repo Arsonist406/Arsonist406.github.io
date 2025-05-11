@@ -1,0 +1,373 @@
+
+.training-left-image {
+    grid-area: left-image;
+    background: url('../../public/resources/image/exercises/background-gym-desktop.png')
+    center/cover no-repeat;
+}
+
+.training-right-image {
+    grid-area: right-image;
+    background: url('../../public/resources/image/exercises/background-gym-desktop-mirror.png')
+    center/cover no-repeat;
+}
+
+.training-center-box {
+    grid-area: center-box;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    display: grid;
+    grid-template-areas:
+        "header"
+        "filter-buttons"
+        "training-container"
+        "training-text"
+        "additional-video";
+    grid-template-columns: 1fr;
+    grid-template-rows: 109px 50px 1fr 100px 320px;
+    z-index: 1;
+}
+
+.common-header {
+    grid-area: header;
+}
+
+.filter-buttons {
+    grid-area: filter-buttons;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding-left: 50px;
+    padding-right: 50px;
+    gap: 10px;
+    margin: 10px;
+}
+
+.training-text {
+    grid-area: training-text;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    align-self: end;
+}
+
+.video {
+    margin: 15px;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.additional-video {
+    grid-area: additional-video;
+    display: grid;
+    grid-template-areas:
+        "video_4 video_5";
+}
+
+.video_4 {
+    grid-area: video_4;
+}
+
+.video_5 {
+    grid-area: video_5;
+}
+
+.instruction {
+    background: #f8f9fa;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    font-family: 'Arial', sans-serif;
+    max-height: 188px;
+    overflow: hidden;
+    transition: all 0.55s ease;
+}
+
+.training-grid {
+    grid-area: training-container;
+    display: grid;
+    grid-template-columns: 365px 365px;
+    gap: 30px;
+    padding: 20px;
+}
+
+.training-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    color: #333;
+    height: 350px;
+}
+
+.training-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.training-card h3 {
+    padding: 15px 20px 0;
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.training-card p {
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-bottom: 5px;
+    margin: 0;
+    color: #666;
+}
+
+@media (max-width: 1024px) {
+    .center-box {
+        grid-template-areas:
+            "header header"
+            "video_1 video_1"
+            "instruction_1 instruction_1"
+            "video_2 video_2"
+            "instruction_2 instruction_2"
+            "video_3 video_3"
+            "instruction_3 instruction_3"
+            "text text"
+            "video_4 video_5";
+        grid-template-rows: 109px repeat(8, auto);
+    }
+
+    .instruction {
+        height: auto;
+        max-height: 90000px;
+        margin: 10px;
+        padding: 8px;
+    }
+
+    .instruction:hover {
+        max-height: 90000px;
+        margin-bottom: 10px;
+    }
+
+    .video iframe {
+        aspect-ratio: 16/9;
+        /*height: auto;*/
+    }
+}
+
+@media (max-width: 480px) {
+    .center-box {
+        grid-template-areas:
+            "header"
+            "video_1"
+            "instruction_1"
+            "video_2"
+            "instruction_2"
+            "video_3"
+            "instruction_3"
+            "text"
+            "video_4"
+            "video_5";
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(10, auto);
+    }
+
+    .video {
+        margin: 8px;
+    }
+
+    .text h3 {
+        font-size: 1.2rem;
+    }
+}
+
+.filter-buttons {
+    grid-area: filter-buttons;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding-left: 50px;
+    padding-right: 50px;
+    gap: 10px;
+    margin: 10px;
+}
+
+.filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.filter-section h4 {
+    margin: 0;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.filter-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.filter-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.filter-button:hover {
+    background-color: #e0e0e0;
+}
+
+.filter-button.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .filter-buttons {
+        grid-template-columns: 1fr;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .filter-row {
+        flex-wrap: wrap;
+    }
+}
+
+.filter-buttons {
+    grid-area: filter-buttons;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px 50px;
+    margin: 10px;
+}
+
+.filter-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.filter-main-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+    align-self: center;
+}
+
+.filter-main-button:hover {
+    background-color: #3e8e41;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 1;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    display: grid;
+    gap: 5px;
+}
+
+.filter-dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+}
+
+.filter-option {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 15px;
+    background-color: #f0f0f0;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    font-size: 14px;
+}
+
+.filter-option:hover {
+    background-color: #e0e0e0;
+}
+
+.filter-option.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .filter-buttons {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 20px;
+        gap: 10px;
+    }
+
+    .dropdown-content {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        box-shadow: none;
+        display: none;
+    }
+
+    .filter-dropdown.active .dropdown-content {
+        display: grid;
+    }
+
+    .filter-dropdown:hover .dropdown-content {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.create-training-button {
+    display: inline-block;
+    padding: 10px;
+    background-color: #2196F3;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    align-self: center;
+    /*margin-left: auto;*/
+    margin-top: 28px;
+}
+
+.create-training-button:hover {
+    background-color: #0b7dda;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .create-training-button {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}

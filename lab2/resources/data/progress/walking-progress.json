@@ -1,0 +1,28 @@
+{
+  "dates": [
+    {
+      "date": "09.03.2025",
+      "goal": 12000,
+      "steps": 9840,
+      "distance": "7.5 км",
+      "calories": "344 ккал",
+      "progress": 82
+    },
+    {
+      "date": "08.03.2025",
+      "goal": 10000,
+      "steps": 7543,
+      "distance": "5.8 км",
+      "calories": "265 ккал",
+      "progress": 75
+    },
+    {
+      "date": "07.03.2025",
+      "goal": 15000,
+      "steps": 14200,
+      "distance": "11.2 км",
+      "calories": "498 ккал",
+      "progress": 95
+    }
+  ]
+}

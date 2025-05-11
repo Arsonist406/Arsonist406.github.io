@@ -1,0 +1,170 @@
+
+.common-header {
+    position: relative;
+    display: grid;
+    grid-template-areas:
+        "logo menu-button auth-button";
+    grid-template-columns: 150px 550px 1fr;
+}
+
+.common-header.profile-page {
+    grid-template-areas:
+        "logo menu-button";
+    grid-template-columns: 500px 1fr;
+}
+
+.logo {
+    grid-area: logo;
+    width: 150px;
+    height: 105px;
+}
+
+.auth-button {
+    grid-area: auth-button;
+    justify-self: end;
+    padding: 35px 38px 38px 10px;
+    transition: background 0.3s;
+    position: relative;
+}
+
+.auth-button img {
+    width: 41px;
+    height: 41px;
+}
+
+.menu-button {
+    grid-area: menu-button;
+    justify-self: end;
+    padding: 38px 5px 38px 38px;
+    transition: background 0.3s;
+    position: relative;
+}
+
+.menu-button.profile-page-menu {
+    grid-area: menu-button;
+    justify-self: end;
+    padding-right: 38px;
+}
+
+.menu-button img {
+    width: 41px;
+    height: 32px;
+}
+
+.menu {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-100%, -50%);
+    display: flex;
+    gap: 15px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    padding: 10px;
+    background: #f8f8f8;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.menu-button:hover .menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+.menu-item {
+    padding: 8px 16px;
+    background: white;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ddd;
+    transition: transform 0.2s;
+    white-space: nowrap;
+    font-size: 20px;
+}
+
+.menu-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.auth-button {
+    grid-area: auth-button;
+    justify-self: end;
+    padding: 35px 38px 38px 10px;
+    transition: background 0.3s;
+    position: relative;
+}
+
+.auth-button img {
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+    border: 2px solid #4CAF50;
+    padding: 2px;
+    box-sizing: border-box;
+    background-color: white;
+    object-fit: cover;
+}
+
+.user-avatar {
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+    border: 2px solid #4CAF50;
+    padding: 2px;
+    box-sizing: border-box;
+    background-color: white;
+    object-fit: cover;
+}
+
+.auth-button img[alt="Auth button"] {
+    border-color: #2196F3;
+}
+
+@media (max-width: 768px) {
+    .common-header.profile-page {
+        grid-template-columns: 1fr auto;
+    }
+
+    .menu {
+        top: 100%;
+        left: auto;
+        right: 0;
+        transform: translate(0, 0);
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .menu-button:hover .menu {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .menu-button:active .menu,
+    .menu-button:focus .menu {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .menu-item {
+        padding: 10px;
+        font-size: 20px;
+        white-space: normal;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu {
+        width: 140px;
+        padding: 8px;
+    }
+
+    .menu-item {
+        font-size: 13px;
+        padding: 8px;
+    }
+}

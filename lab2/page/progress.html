@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Statistics and achievements of user physical activity">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MyProgress</title>
+
+        <link rel="stylesheet" href="style/main.css">
+        <link rel="stylesheet" href="style/common-header.css">
+        <link rel="stylesheet" href="style/progress.css">
+    </head>
+    <body>
+    <div class="container">
+        <div class="background-image left-image"></div>
+        <div class="background-image right-image"></div>
+
+        <div class="center-box">
+            <div class="header common-header" id="header-placeholder"></div>
+
+            <div class="walking-info">
+
+                <div class="info">
+                    <h4>✨Ціль✨</h4>
+                    <p id="goal"></p>
+                    <h4>✅Зроблено кроків✅</h4>
+                    <p id="steps"></p>
+                    <h4>🚶Пройдена відстань🚶</h4>
+                    <p id="distance"></p>
+                    <h4>🔥Спалено калорій🔥</h4>
+                    <p id="calories"></p>
+                </div>
+
+                <div class="progress">
+                    <div class="date"></div>
+
+                    <div class="progress-ring">
+                        <div class="progress-overlay"></div>
+                        <p class="progress-text"></p>
+                    </div>
+
+                    <a class="arrow arrow-left">←</a>
+                    <a class="arrow arrow-right">→</a>
+                </div>
+            </div>
+
+            <div class="training-log" id="training-log"></div>
+            <div class="add-training" id="add-training"></div>
+
+            <div class="achievements-area"></div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // ==================== Common ====================
+        fetch('../page/internal/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+
+        fetch('../page/internal/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+
+
+        // ==================== Walking Progress ====================
+        let currentIndex = 0;
+        let progressData = [];
+        fetch('../resources/data/progress/walking-progress.json')
+            .then(response => response.json())
+            .then(data => {
+                progressData = data.dates;
+                updateDisplay();
+            })
+            .catch(error => console.error('Помилка завантаження даних:', error));
+
+        function handleArrowClick(direction) {
+            const arrow = document.querySelector(`.arrow-${direction}`);
+            arrow.style.transform = 'scale(0.9)';
+
+            setTimeout(() => {
+                arrow.style.transform = 'scale(1)';
+
+                if(direction === 'left' && currentIndex < progressData.length - 1) {
+                    currentIndex++;
+                }
+                else if(direction === 'right' && currentIndex > 0) {
+                    currentIndex--;
+                }
+
+                updateDisplay();
+            }, 100);
+        }
+
+        document.querySelector('.arrow-left').addEventListener('click', () => handleArrowClick('left'));
+        document.querySelector('.arrow-right').addEventListener('click', () => handleArrowClick('right'));
+
+        function updateDisplay() {
+            const currentData = progressData[currentIndex];
+            if (!currentData) return;
+
+            document.getElementById('goal').textContent = currentData.goal;
+            document.getElementById('steps').textContent = currentData.steps;
+            document.getElementById('distance').textContent = currentData.distance;
+            document.getElementById('calories').textContent = currentData.calories;
+
+            document.querySelector('.date').textContent = currentData.date;
+
+            const progressRing = document.querySelector('.progress-ring');
+            const progressText = document.querySelector('.progress-text');
+            progressRing.style.background =
+                `conic-gradient(#4CAF50 0%,
+                #4CAF50 ${currentData.progress}%,
+                #eee ${currentData.progress}%,
+                #eee 100%)`;
+            progressText.textContent = `${currentData.progress}%`;
+        }
+
+
+        // ==================== Add Training ====================
+        const addTrainingDiv = document.getElementById('add-training');
+        const trainingLogDiv = document.getElementById('training-log');
+        let trainingLogs = []; // Масив для зберігання тренувань
+
+        const formHTML = `
+            <form id="training-form" style="padding: 20px;">
+                <div style="text-align: center;">
+                    <label>Тип тренування</label>
+                    <select id="training-type" required style="width: 100%; padding: 8px; font-family: 'Arial', sans-serif; margin-bottom: 20px; margin-top: 4px;">
+                        <option value="" disabled selected>Оберіть тип</option>
+                        <option value="силове">Силове</option>
+                        <option value="атлетика">Атлетика</option>
+                        <option value="домашнє">Домашнє</option>
+                    </select>
+                </div>
+
+                <div style="margin-right: 20px; text-align: center;">
+                    <label>Початок</label>
+                    <input type="datetime-local" id="start-time" required style="width: 100%; padding: 8px; font-family: 'Arial', sans-serif; margin-bottom: 20px; margin-top: 4px;">
+                </div>
+
+                <div style="margin-right: 20px; text-align: center;">
+                    <label>Кінець</label>
+                    <input type="datetime-local" id="end-time" required style="width: 100%; padding: 8px; font-family: 'Arial', sans-serif; margin-bottom: 20px; margin-top: 4px;">
+                </div>
+
+                <button type="submit" style="width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
+                    Додати тренування
+                </button>
+            </form>
+        `;
+
+        addTrainingDiv.innerHTML = formHTML;
+
+        document.getElementById('training-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const type = document.getElementById('training-type').value;
+            const startTime = new Date(document.getElementById('start-time').value);
+            const endTime = new Date(document.getElementById('end-time').value);
+
+            if (startTime >= endTime) {
+                alert('Час початку повинен бути раніше за час завершення!');
+                return;
+            }
+
+            const now = new Date();
+            let status;
+
+            if (now > endTime) {
+                status = 'закінчене';
+            } else if (now >= startTime) {
+                status = 'триває';
+            } else {
+                status = 'заплановане';
+            }
+
+            trainingLogs.push({
+                type,
+                startTime,
+                endTime,
+                status
+            });
+
+            renderTrainingLog();
+            this.reset();
+        });
+
+        function renderTrainingLog() {
+            trainingLogs.sort((a, b) => b.startTime - a.startTime);
+
+            trainingLogDiv.innerHTML = '';
+
+            trainingLogs.forEach(training => {
+                const trainingItem = document.createElement('div');
+                trainingItem.className = 'training-item';
+                trainingItem.innerHTML = `
+                    <div style="padding: 15px; margin: 10px; box-shadow: 0 0 4px rgba(0,0,0,0.2); border-radius: 8px; font-family: 'Arial', sans-serif;">
+                        <p><strong>Тип:</strong> ${training.type}</p>
+                        <p><strong>Початок:</strong> ${formatDateTime(training.startTime)}</p>
+                        <p><strong>Кінець:</strong> ${formatDateTime(training.endTime)}</p>
+                        <p><strong>Статус:</strong> <span class="status" style="color: ${getStatusColor(training.status)}">${training.status}</span></p>
+                    </div>
+                `;
+                trainingLogDiv.appendChild(trainingItem);
+            });
+        }
+
+        function formatDateTime(date) {
+            return date.toLocaleString('uk-UA', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function getStatusColor(status) {
+            switch(status) {
+                case 'закінчене': return '#888';
+                case 'триває': return '#4CAF50';
+                case 'заплановане': return '#2196F3';
+                default: return '#000';
+            }
+        }
+
+
+        // ==================== Achievements ====================
+        const achievementsArea = document.querySelector('.achievements-area');
+
+        fetch('../resources/data/progress/achievements.json')
+            .then(response => response.json())
+            .then(data => {
+                achievementsArea.innerHTML = data.achievements.map(achievement => `
+                    <div class="achievement">
+                        <img src="${achievement.icon}" alt="Досягнення">
+                        <div class="text">${achievement.text}</div>
+                    </div>
+                `).join('');
+            })
+            .catch(error => console.error('Помилка завантаження досягнень:', error));
+    </script>
+    </body>
+</html>

@@ -1,0 +1,132 @@
+
+.auth-left-image {
+    grid-area: left-image;
+    background: url('../../public/resources/image/home/background-home-desktop.png') center/cover no-repeat;
+}
+
+.auth-right-image {
+    grid-area: right-image;
+    background: url('../../public/resources/image/home/background-home-desktop.png') center/cover no-repeat;
+}
+
+.auth-center-box {
+    grid-area: center-box;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    display: grid;
+    grid-template-areas:
+    "header"
+    "auth-form";
+    grid-template-rows: 109px 1fr;
+    z-index: 1;
+    background: white;
+}
+
+.auth-header {
+    grid-area: header;
+    padding: 20px;
+    text-align: center;
+}
+
+.auth-header img {
+    width: 150px;
+    height: auto;
+}
+
+.auth-form-container {
+    grid-area: auth-form;
+    padding: 30px;
+    max-width: 400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.auth-form-container h2 {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.auth-form-container input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.auth-form-container button {
+    width: 426px;
+    padding: 12px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.auth-form-container button:hover {
+    background: #45a049;
+}
+
+.auth-toggle {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.auth-toggle span {
+    color: #4CAF50;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.auth-error {
+    color: #f44336;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.input-slider {
+    margin: 15px 0;
+}
+
+.input-slider label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.input-slider input[type="range"] {
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .input-group {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-center-box {
+        grid-template-rows: 80px 1fr;
+    }
+
+    .auth-header img {
+        width: 120px;
+    }
+
+    .auth-form-container {
+        padding: 20px;
+    }
+}
