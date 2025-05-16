@@ -1,15 +1,14 @@
+import {getFirestore} from "firebase/firestore";
+import {initializeApp} from "firebase/app";
+import {getAuth} from "firebase/auth";
 
-import { getFirestore} from "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-
-export const firebaseConfig = {
-    apiKey: "AIzaSyAe6oA9QgUFIALbOhDEoY7nd7DcbQ50UCw",
-    authDomain: "healthy-life-483f2.firebaseapp.com",
-    projectId: "healthy-life-483f2",
-    storageBucket: "healthy-life-483f2.firebasestorage.app",
-    messagingSenderId: "820351545514",
-    appId: "1:820351545514:web:33f2842160d435d79060d3"
+const firebaseConfig = {
+    apiKey: "AIzaSyDpHUV_cW-pkhMI45m_7ofzFD-fZjmqN78",
+    authDomain: "healty-life-2.firebaseapp.com",
+    projectId: "healty-life-2",
+    storageBucket: "healty-life-2.firebasestorage.app",
+    messagingSenderId: "679196467462",
+    appId: "1:679196467462:web:b098f2fd3b38554af83e87"
 };
 
 const app = initializeApp(firebaseConfig);

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Link, useNavigate  } from 'react-router-dom';
-import { auth, db } from '../firebase-config';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import React, {useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {auth, db} from '../firebase-config';
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth';
+import {doc, setDoc} from 'firebase/firestore';
 import Footer from '../components/Footer';
 import '../styles/main.css';
 import '../styles/auth.css';
-import {ENDPOINTS} from "../serverURLconfig";
+import {ENDPOINTS} from "../static/static";
 
 const AuthPage = () => {
     const navigate = useNavigate();

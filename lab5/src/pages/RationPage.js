@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase-config'; // Імпортуйте ініціалізований firestore
+import React, {useEffect, useState} from 'react';
+import {collection, getDocs} from 'firebase/firestore';
+import {db} from '../firebase-config';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/main.css';

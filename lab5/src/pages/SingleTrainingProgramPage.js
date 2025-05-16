@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { getDoc, doc } from 'firebase/firestore';
-import { db } from '../firebase-config';
-import { getAuth } from 'firebase/auth';
+import React, {useEffect, useState} from 'react';
+import {Link, useParams} from 'react-router-dom';
+import {doc, getDoc} from 'firebase/firestore';
+import {db} from '../firebase-config';
+import {getAuth} from 'firebase/auth';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -66,6 +66,7 @@ const SingleTrainingProgramPage = () => {
 
                         {training.videoId && (
                             <div className="video-container">
+                                {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
                                 <iframe
                                     width="100%"
                                     height="500"

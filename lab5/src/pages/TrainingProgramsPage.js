@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { db, auth } from '../firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
+import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
+import {auth, db} from '../firebase-config';
+import {collection, getDocs} from 'firebase/firestore';
+import {onAuthStateChanged} from 'firebase/auth';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/main.css';
 import '../styles/common-header.css';
 import '../styles/training-programs.css';
-import {ENDPOINTS} from "../serverURLconfig";
+import {ENDPOINTS} from "../static/static";
 
 const TrainingProgramsPage = () => {
     const [trainings, setTrainings] = useState([]);
@@ -182,6 +182,7 @@ const TrainingProgramsPage = () => {
 
                     <div className="additional-video">
                         <div className="video video_4">
+                            {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
                             <iframe
                                 width="100%"
                                 height="100%"
@@ -191,6 +192,7 @@ const TrainingProgramsPage = () => {
                             ></iframe>
                         </div>
                         <div className="video video_5">
+                            {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
                             <iframe
                                 width="100%"
                                 height="100%"

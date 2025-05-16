@@ -1,11 +1,10 @@
-
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { auth } from '../firebase-config';
-import { onAuthStateChanged } from 'firebase/auth';
+import React, {useEffect, useState} from 'react';
+import {Link, useLocation} from 'react-router-dom';
+import {auth} from '../firebase-config';
+import {onAuthStateChanged} from 'firebase/auth';
 import '../styles/main.css';
 import '../styles/common-header.css';
-import {ENDPOINTS} from "../serverURLconfig";
+import {ENDPOINTS} from "../static/static";
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);

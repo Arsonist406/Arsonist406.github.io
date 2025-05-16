@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { auth } from '../firebase-config';
-import { onAuthStateChanged } from 'firebase/auth';
+import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
+import {auth} from '../firebase-config';
+import {onAuthStateChanged} from 'firebase/auth';
 import Footer from '../components/Footer';
 import '../styles/home.css';
-import {ENDPOINTS} from "../serverURLconfig";
+import {ENDPOINTS} from "../static/static";
 
 const HomePage = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);

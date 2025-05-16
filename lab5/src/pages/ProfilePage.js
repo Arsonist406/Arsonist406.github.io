@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { auth, db } from '../firebase-config';
-import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import React, {useEffect, useState} from 'react';
+import {auth, db} from '../firebase-config';
+import {useNavigate} from 'react-router-dom';
+import {onAuthStateChanged, signOut} from 'firebase/auth';
+import {doc, getDoc, updateDoc} from 'firebase/firestore';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/profile.css';
-import {ENDPOINTS} from "../serverURLconfig";
+import {ENDPOINTS} from "../static/static";
 
 const ProfilePage = () => {
     const navigate = useNavigate();

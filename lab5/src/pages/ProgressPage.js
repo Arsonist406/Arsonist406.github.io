@@ -1,23 +1,15 @@
-
-import React, { useState, useEffect } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/main.css';
 import '../styles/common-header.css';
 import '../styles/progress.css';
-import {
-    doc,
-    collection,
-    query,
-    where,
-    getDocs,
-    orderBy,
-    runTransaction
-} from 'firebase/firestore';
-import { auth, db } from '../firebase-config';
-import {ENDPOINTS} from "../serverURLconfig";
+import {collection, doc, getDocs, orderBy, query, runTransaction, where} from 'firebase/firestore';
+import {auth, db} from '../firebase-config';
+import {ENDPOINTS} from "../static/static";
+import {addTraining, fetchTrainings} from "../api/apiClient";
 
-const ProgressPage = () => {
+const ProgressPage = (callback, deps) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [progressData, setProgressData] = useState({ dates: [] });
 
@@ -31,52 +23,34 @@ const ProgressPage = () => {
     const [achievements, setAchievements] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const [trainingLoading, setTrainingLoading] = useState(false);
-    const [trainingError, setTrainingError] = useState(null);
-
-    const determineTrainingStatus = (startTime, endTime) => {
-        const now = new Date();
-        const start = new Date(startTime);
-        const end = new Date(endTime);
-
-        if (now > end) {
-            return 'Закінчене';
-        } else if (now >= start) {
-            return 'Триває';
-        } else {
-            return 'Заплановане';
-        }
-    };
-
-    const fetchTrainings = async () => {
-        const userId = auth.currentUser?.uid;
-        if (!userId) return;
-
+    const loadTrainings = useCallback(async () => {
         try {
-            setTrainingLoading(true);
-            const response = await fetch(ENDPOINTS.TRAININGS_LOG(userId));
-            if (!response.ok) {
-                throw new Error('Failed to fetch trainings');
-            }
-            const data = await response.json();
-
-            const trainingsWithStatus = data.map(training => ({
-                ...training,
-                status: determineTrainingStatus(training.startTime, training.endTime)
-            }));
-
-            setTrainingLogs(trainingsWithStatus);
+            const userId = auth.currentUser?.uid;
+            if (!userId) return;
+            const data = await fetchTrainings(userId);
+            setTrainingLogs(data);
         } catch (error) {
-            console.error('Error fetching trainings:', error);
-            setTrainingError(error.message);
-        } finally {
-            setTrainingLoading(false);
+            console.error('Помилка:', error);
         }
-    };
+    }, []);
 
     useEffect(() => {
-        fetchTrainings();
-    }, []);
+        loadTrainings();
+    }, [loadTrainings])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await addTraining(auth.currentUser.uid, {
+                type: trainingForm.type,
+                startTime: trainingForm.startTime,
+                endTime: trainingForm.endTime,
+            });
+            await loadTrainings();
+        } catch (error) {
+            console.error('Помилка:', error);
+        }
+    };
 
     useEffect(() => {
         document.title = "MyProgress";
@@ -114,27 +88,6 @@ const ProgressPage = () => {
         }, 100);
 
         return () => clearTimeout(timer);
-    }, []);
-
-    useEffect(() => {
-        const loadAchievements = async () => {
-            try {
-                const achievementsRef = collection(db, 'achievements');
-                const q = query(achievementsRef);
-                const snapshot = await getDocs(q);
-
-                const achievementsData = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-
-                setAchievements(achievementsData);
-            } catch (error) {
-                console.error('Помилка завантаження досягнень:', error);
-            }
-        };
-
-        loadAchievements();
     }, []);
 
     async function generateDailyWalkingStats(userId) {
@@ -197,62 +150,9 @@ const ProgressPage = () => {
         });
     };
 
-    const handleTrainingSubmit = async (e) => {
-        e.preventDefault();
-
-        const userId = auth.currentUser?.uid;
-        if (!userId) return;
-
-        const startTime = new Date(trainingForm.startTime);
-        const endTime = new Date(trainingForm.endTime);
-
-        if (startTime >= endTime) {
-            alert('Час початку повинен бути раніше за час завершення!');
-            return;
-        }
-
-        try {
-            setTrainingLoading(true);
-            const response = await fetch(ENDPOINTS.TRAININGS_LOG(userId), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    type: trainingForm.type,
-                    startTime: trainingForm.startTime,
-                    endTime: trainingForm.endTime
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to add training');
-            }
-
-            // Оновлюємо список тренувань після успішного додавання
-            await fetchTrainings();
-
-            setTrainingForm({
-                type: '',
-                startTime: '',
-                endTime: ''
-            });
-        } catch (error) {
-            console.error('Error adding training:', error);
-            setTrainingError(error.message);
-        } finally {
-            setTrainingLoading(false);
-        }
-    };
-
-    const formatDateTime = (date) => {
-        return date.toLocaleString('uk-UA', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+    const formatDateTime = (oldDate) => {
+        const newDate = new Date(oldDate);
+        return newDate.toLocaleString('uk-UA')
     };
 
     const getStatusColor = (status) => {
@@ -261,6 +161,20 @@ const ProgressPage = () => {
             case 'Триває': return '#4CAF50';
             case 'Заплановане': return '#2196F3';
             default: return '#000';
+        }
+    };
+
+    const determineTrainingStatus = (startTime, endTime) => {
+        const now = new Date();
+        const end = new Date(endTime);
+        const start = new Date(startTime);
+
+        if (now > end) {
+            return 'Закінчене';
+        } else if (now >= start) {
+            return 'Триває';
+        } else {
+            return 'Заплановане';
         }
     };
 
@@ -320,18 +234,17 @@ const ProgressPage = () => {
                     </div>
 
                     <div className="training-log">
-                        {trainingLoading && <div className="loading-message">Завантаження тренувань...</div>}
-                        {trainingError && <div className="error-message">{trainingError}</div>}
-
                         {trainingLogs.map((training) => (
                             <div key={training.id} className="training-item">
                                 <div style={{ padding: '15px', margin: '10px', boxShadow: '0 0 4px rgba(0,0,0,0.2)', borderRadius: '8px', fontFamily: 'Arial, sans-serif' }}>
                                     <p><strong>Тип:</strong> {training.type}</p>
                                     <p><strong>Початок:</strong> {formatDateTime(training.startTime)}</p>
                                     <p><strong>Кінець:</strong> {formatDateTime(training.endTime)}</p>
-                                    <p><strong>Статус:</strong> <span className="status" style={{ color: getStatusColor(
-                                            determineTrainingStatus(training.startTime, training.endTime)) }}>
-                                        {determineTrainingStatus(training.startTime, training.endTime)}</span>
+                                    <p><strong>Статус: </strong>
+                                        <span className="status" style={{color:
+                                                getStatusColor(determineTrainingStatus(training.startTime, training.endTime)) }}>
+                                            {determineTrainingStatus(training.startTime, training.endTime)}
+                                        </span>
                                     </p>
                                 </div>
                             </div>
@@ -339,7 +252,7 @@ const ProgressPage = () => {
                     </div>
 
                     <div className="add-training">
-                        <form id="training-form" onSubmit={handleTrainingSubmit} style={{ padding: '20px' }}>
+                        <form id="training-form" onSubmit={handleSubmit} style={{ padding: '20px' }}>
                             <div style={{ textAlign: 'center' }}>
                                 <label>Тип тренування</label>
                                 <select
@@ -388,19 +301,18 @@ const ProgressPage = () => {
 
                             <button
                                 type="submit"
-                                disabled={trainingLoading}
                                 style={{
                                     width: '100%',
                                     padding: '12px',
-                                    background: trainingLoading ? '#cccccc' : '#4CAF50',
+                                    background:'#4CAF50',
                                     color: 'white',
                                     border: 'none',
                                     borderRadius: '5px',
                                     fontSize: '16px',
-                                    cursor: trainingLoading ? 'not-allowed' : 'pointer'
+                                    cursor: 'pointer'
                                 }}
                             >
-                                {trainingLoading ? 'Додавання...' : 'Додати тренування'}
+                                Додати тренування
                             </button>
                         </form>
                     </div>

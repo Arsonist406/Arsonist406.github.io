@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { db } from '../firebase-config';
-import { collection, addDoc } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
+import React, {useState} from 'react';
+import {db} from '../firebase-config';
+import {addDoc, collection} from 'firebase/firestore';
+import {useNavigate} from 'react-router-dom';
+import {getAuth} from 'firebase/auth';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/main.css';
 import '../styles/create-training.css';
-import {ENDPOINTS} from "../serverURLconfig";
+import {ENDPOINTS} from "../static/static";
 
 const CreateTrainingPage = () => {
     const [formData, setFormData] = useState({
